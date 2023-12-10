@@ -18,7 +18,7 @@ class VendingMachine {
     private List<Product> products;
     private double moneyHeld;
     private boolean transactionInProgress;
-
+    //constructor
     public VendingMachine(List<Product> products) {
         this.products = products;
         this.moneyHeld = 0;
