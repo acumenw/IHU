@@ -9,7 +9,13 @@
 
 <body>
   <?php
-  echo "Hello World";
+  require("OOP_cars.php");
+
+  print_r($bmw);
+  echo '<Pre>';
+  $bmw = new car("1", "2", "3", "4", "5", "6", "7");
+  echo '</pre>';
+  echo date("D, d-M-Y");
   ?>
 </body>
 
