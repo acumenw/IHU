@@ -19,9 +19,10 @@ import java.util.Scanner;
 public class VendingMachineApp {
     public static void main(String[] args) {
         List<Product> products = new ArrayList<>();
-        products.add(new Product("Soda", 1.50, 5));
-        products.add(new Product("Chips", 1.00, 3));
+        products.add(new Product("Soda", 1.50, 10));
+        products.add(new Product("Chips", 1.00, 10));
         products.add(new Product("Chocolate", 2.00, 0));
+        products.add(new Product("Popcorn", 1.30, 10));
         
 
         VendingMachine vendingMachine = new VendingMachine(products);
