@@ -1,24 +1,28 @@
-function searchAuthor() {
-  var authorName = document.getElementById("authorName").value;
-  //console.log(authorName);
-}
-
 function getAuthor() {
-  //var authorName = document.getElementById("authorName");
-  var authorName = "Christoph_Meinel";
+  var authorNameDefault = document.getElementById("authorName").value;
+  var authorName = authorNameDefault.split(" ").join("_");
   var url =
-    "https://dblp.org/search/publ/api?q=author:" +
-    authorName +
-    ":&format=jsonp";
+    "https://dblp.org/search/publ/api?q=author:" + authorName + ":&format=json";
 
-  console.log(authorName.value);
   fetch(url)
     .then((response) => {
-      return response.text();
+      return response.json();
     })
     .then((authorList) => {
-      document.getElementById("content").innerHTML = authorList;
-      console.log(authorList);
+      var totalHits = authorList.result.hits["@total"];
+      //   console.log(totalHits);
+      if (totalHits == 0) {
+        document
+          .getElementById("searchInfo")
+          .setAttribute("class", "warningMessages");
+        document.getElementById("searchInfo").textContent =
+          "No author found with the name: " + authorName + ", please try again";
+      } else {
+        document
+          .getElementById("searchInfo")
+          .setAttribute("class", "successMessages");
+        document.getElementById("searchInfo").textContent = "Found";
+      }
     })
     .catch((error) => {
       console.error("Error: ", error);
