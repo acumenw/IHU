@@ -10,8 +10,9 @@ function getAuthor() {
     })
     .then((authorList) => {
       var totalHits = authorList.result.hits["@total"];
+
       //   console.log(totalHits);
-      if (totalHits == 0) {
+      if (totalHits <= 0) {
         document
           .getElementById("searchInfo")
           .setAttribute("class", "warningMessages");
@@ -22,6 +23,12 @@ function getAuthor() {
           .getElementById("searchInfo")
           .setAttribute("class", "successMessages");
         document.getElementById("searchInfo").textContent = "Found";
+        for (var i = 0; i < totalHits; i++) {
+          console.log(authorList.result.hits.hit[i].info["title"]);
+          console.log(authorList.result.hits.hit[i].info["venue"]);
+          console.log(authorList.result.hits.hit[i].info["year"]);
+          console.log(authorList.result.hits.hit[i].info["type"]);
+        }
       }
     })
     .catch((error) => {
