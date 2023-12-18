@@ -43,22 +43,22 @@ function setTable(authorList) {
   //create header row
   var headerRow = document.createElement("tr");
 
-  //create title header and append to row
+  //create title cell and append to row
   var title = document.createElement("th");
   var titleContent = document.createTextNode("Title");
   title.append(titleContent);
 
-  //create venue header and append to row
+  //create venue cell and append to row
   var venue = document.createElement("th");
   var venueContent = document.createTextNode("Venue");
   venue.append(venueContent);
 
-  //create year header and append to row
+  //create year cell and append to row
   var year = document.createElement("th");
   var yearContent = document.createTextNode("Year");
   year.append(yearContent);
 
-  //create type header and append to row
+  //create type cell and append to row
   var type = document.createElement("th");
   var typeContent = document.createTextNode("Type");
   type.append(typeContent);
@@ -74,38 +74,38 @@ function setTable(authorList) {
     //create new row
     var newRow = document.createElement("tr");
 
-    //add title header to the row
+    //add title value to the row
     var newRowTitle = document.createElement("td");
     var newRowTitleContent = document.createTextNode(
       authorList.result.hits.hit[i].info.title
     );
     newRowTitle.append(newRowTitleContent);
 
-    //add venue header to the row
+    //add venue value to the row
     var newRowVenue = document.createElement("td");
     var newRowVenueContent = document.createTextNode(
       authorList.result.hits.hit[i].info.venue
     );
     newRowVenue.append(newRowVenueContent);
 
-    //add year header to the row
+    //add year value to the row
     var newRowYear = document.createElement("td");
     var newRowYearContent = document.createTextNode(
       authorList.result.hits.hit[i].info.year
     );
     newRowYear.append(newRowYearContent);
 
-    //add year header to the row
+    //add year value to the row
     var newRowType = document.createElement("td");
     var newRowYearType = document.createTextNode(
       authorList.result.hits.hit[i].info.type
     );
     newRowType.append(newRowYearType);
 
-    //append title to the new row
+    //append values to the new row
     newRow.append(newRowTitle, newRowVenue, newRowYear, newRowType);
 
-    //append title to the table
+    //append new row to the table
     table.append(newRow);
   }
 
