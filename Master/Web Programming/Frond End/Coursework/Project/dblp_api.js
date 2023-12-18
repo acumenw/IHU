@@ -4,9 +4,22 @@ var totalHits;
 var url;
 
 function startSearch() {
+  clearContent();
   authorNameDefault = document.getElementById("authorName").value;
   authorName = authorNameDefault.split(" ").join("_");
   getAuthor(authorName);
+}
+function clearContent() {
+  const publDataElement = document.getElementById("publData");
+  const searchInfoElement = document.getElementById("searchInfo");
+
+  if (publDataElement) {
+    publDataElement.remove();
+  }
+
+  if (searchInfoElement) {
+    searchInfoElement.innerHTML = "";
+  }
 }
 function authorNotFound() {
   document
@@ -14,6 +27,13 @@ function authorNotFound() {
     .setAttribute("class", "warningMessages");
   document.getElementById("searchInfo").textContent =
     "No author found with the name: " + authorName + ", please try again";
+}
+
+function authorFound() {
+  document
+    .getElementById("searchInfo")
+    .setAttribute("class", "successMessages");
+  document.getElementById("searchInfo").textContent = "Author Found";
 }
 
 function setTable(authorList) {
@@ -68,8 +88,22 @@ function setTable(authorList) {
     );
     newRowVenue.append(newRowVenueContent);
 
+    //add year header to the row
+    var newRowYear = document.createElement("td");
+    var newRowYearContent = document.createTextNode(
+      authorList.result.hits.hit[i].info.year
+    );
+    newRowYear.append(newRowYearContent);
+
+    //add year header to the row
+    var newRowType = document.createElement("td");
+    var newRowYearType = document.createTextNode(
+      authorList.result.hits.hit[i].info.type
+    );
+    newRowType.append(newRowYearType);
+
     //append title to the new row
-    newRow.append(newRowTitle, newRowVenue);
+    newRow.append(newRowTitle, newRowVenue, newRowYear, newRowType);
 
     //append title to the table
     table.append(newRow);
@@ -94,6 +128,7 @@ function getAuthor(name) {
       if (totalHits <= 0) {
         authorNotFound();
       } else {
+        authorFound();
         setTable(authorList);
       }
     })
