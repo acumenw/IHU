@@ -5,3 +5,15 @@
 .successMessages {
     color: green
 }
+
+#publData {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#publData th, #publData td {
+    border: 1px solid black;
+    width: 25%; /* Set each column to be 25% of the table width */
+    padding: 8px;
+    text-align: left;
+}
