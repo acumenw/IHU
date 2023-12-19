@@ -1,6 +1,9 @@
 var authorNameDefault;
 var authorName;
 var totalHits;
+var fPointer = 0;
+var hPointer = 20;
+var lastHit;
 var url;
 
 function startSearch() {
@@ -9,9 +12,12 @@ function startSearch() {
   authorName = authorNameDefault.split(" ").join("_");
   getAuthor(authorName);
 }
+
 function clearContent() {
   const publDataElement = document.getElementById("publData");
   const searchInfoElement = document.getElementById("searchInfo");
+  const previousButton = document.getElementById("previousButton");
+  const nextButton = document.getElementById("nextButton");
 
   if (publDataElement) {
     publDataElement.remove();
@@ -20,7 +26,42 @@ function clearContent() {
   if (searchInfoElement) {
     searchInfoElement.innerHTML = "";
   }
+
+  if (previousButton) {
+    previousButton.remove();
+  }
+  if (nextButton) {
+    nextButton.remove();
+  }
 }
+
+function getAuthor(name) {
+  url =
+    "https://dblp.org/search/publ/api?q=author:" +
+    name +
+    ":&format=json&h=" +
+    hPointer +
+    "&f=" +
+    fPointer;
+
+  fetch(url)
+    .then((response) => {
+      return response.json();
+    })
+    .then((authorList) => {
+      totalHits = authorList.result.hits["@total"];
+      if (totalHits <= 0) {
+        authorNotFound();
+      } else {
+        authorFound();
+        setTable(authorList);
+      }
+    })
+    .catch((error) => {
+      console.error("Error: ", error);
+    });
+}
+
 function authorNotFound() {
   document
     .getElementById("searchInfo")
@@ -34,6 +75,17 @@ function authorFound() {
     .getElementById("searchInfo")
     .setAttribute("class", "successMessages");
   document.getElementById("searchInfo").textContent = "Author Found";
+}
+
+function nextButtonClick() {
+  fPointer += 20;
+  console.log("test");
+  getAuthor(authorName);
+  updatePaginationButtons();
+}
+
+function updatePaginationButtons() {
+  previousButton.disabled = fPointer === 0;
 }
 
 function setTable(authorList) {
@@ -69,8 +121,13 @@ function setTable(authorList) {
   //append header row to the table
   table.append(headerRow);
 
+  lastHit = hPointer + fPointer;
+  if (lastHit > totalHits) {
+    lastHit = totalHits;
+  }
+
   //add data to table
-  for (var i = 0; i < totalHits; i++) {
+  for (var i = fPointer; i < lastHit; i++) {
     //create new row
     var newRow = document.createElement("tr");
 
@@ -95,7 +152,7 @@ function setTable(authorList) {
     );
     newRowYear.append(newRowYearContent);
 
-    //add year value to the row
+    //add type value to the row
     var newRowType = document.createElement("td");
     var newRowTypeContent = document.createTextNode(
       authorList.result.hits.hit[i].info.type
@@ -109,30 +166,26 @@ function setTable(authorList) {
     table.append(newRow);
   }
 
+  //create previous button
+  var previousButton = document.createElement("button");
+  previousButton.setAttribute("id", "previousButton");
+  previousButton.innerHTML = "Previous";
+  previousButton.style.marginTop = "10px";
+  previousButton.style.marginBottom = "10px";
+
+  //create next button
+  var nextButton = document.createElement("button");
+  nextButton.setAttribute("id", "nextButton");
+  nextButton.setAttribute("onclick", "nextButtonClick()");
+  nextButton.innerHTML = "Next";
+  nextButton.style.margin = "10px";
+
   //apend table to the body
   document.body.append(table);
 
   //set table attributes
   table.setAttribute("id", "publData");
-}
 
-function getAuthor(name) {
-  url = "https://dblp.org/search/publ/api?q=author:" + name + ":&format=json";
-
-  fetch(url)
-    .then((response) => {
-      return response.json();
-    })
-    .then((authorList) => {
-      totalHits = authorList.result.hits["@total"];
-      if (totalHits <= 0) {
-        authorNotFound();
-      } else {
-        authorFound();
-        setTable(authorList);
-      }
-    })
-    .catch((error) => {
-      console.error("Error: ", error);
-    });
+  //append buttons to the bottom of the table
+  document.body.append(previousButton, nextButton);
 }

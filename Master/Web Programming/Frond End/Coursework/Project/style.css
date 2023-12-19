@@ -1,3 +1,7 @@
+#previousButton, #nextButton, #searchButton{
+    width: 100px;
+}
+
 .warningMessages {
     color:red
 }
