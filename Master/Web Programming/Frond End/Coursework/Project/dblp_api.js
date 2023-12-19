@@ -74,15 +74,16 @@ function authorFound() {
   document
     .getElementById("searchInfo")
     .setAttribute("class", "successMessages");
-  document.getElementById("searchInfo").textContent = "Author Found";
+  document.getElementById("searchInfo").textContent =
+    authorName.split("_").join(" ") + " Publications";
 }
 
-function nextButtonClick() {
-  fPointer += 20;
-  console.log("test");
-  getAuthor(authorName);
-  updatePaginationButtons();
-}
+// function nextButtonClick() {
+//   fPointer += 20;
+//   console.log("test");
+//   getAuthor(authorName);
+//   updatePaginationButtons();
+// }
 
 function updatePaginationButtons() {
   previousButton.disabled = fPointer === 0;
