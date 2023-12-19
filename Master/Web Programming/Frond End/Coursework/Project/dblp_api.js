@@ -97,10 +97,10 @@ function setTable(authorList) {
 
     //add year value to the row
     var newRowType = document.createElement("td");
-    var newRowYearType = document.createTextNode(
+    var newRowTypeContent = document.createTextNode(
       authorList.result.hits.hit[i].info.type
     );
-    newRowType.append(newRowYearType);
+    newRowType.append(newRowTypeContent);
 
     //append values to the new row
     newRow.append(newRowTitle, newRowVenue, newRowYear, newRowType);
