@@ -2,10 +2,12 @@ var authorNameDefault;
 var authorName;
 var authorList;
 var totalHits;
-var fPointer = 0;
-var hPointer = 2;
+var fPointer;
+var hPointer;
 var lastHit = 0;
 var url;
+var previousButton;
+var nextButton;
 
 function startSearch() {
   fPointer = 0;
@@ -87,12 +89,18 @@ function authorFound() {
 function nextButtonClick() {
   clearContent();
   fPointer += hPointer;
+  getAuthor(authorName);
+}
 
+function previousButtonClick() {
+  clearContent();
+  fPointer -= hPointer;
   getAuthor(authorName);
 }
 
 function updatePaginationButtons() {
   previousButton.disabled = fPointer === 0;
+  nextButton.disabled = false;
 }
 
 function setTable(authorList) {
@@ -127,11 +135,6 @@ function setTable(authorList) {
 
   //append header row to the table
   table.append(headerRow);
-
-  lastHit = hPointer + fPointer;
-  if (lastHit > totalHits) {
-    lastHit = totalHits;
-  }
 
   //add data to table
   for (var i = 0; i < hPointer; i++) {
@@ -174,14 +177,15 @@ function setTable(authorList) {
   }
 
   //create previous button
-  var previousButton = document.createElement("button");
+  previousButton = document.createElement("button");
   previousButton.setAttribute("id", "previousButton");
+  previousButton.setAttribute("onclick", "previousButtonClick()");
   previousButton.innerHTML = "Previous";
   previousButton.style.marginTop = "10px";
   previousButton.style.marginBottom = "10px";
 
   //create next button
-  var nextButton = document.createElement("button");
+  nextButton = document.createElement("button");
   nextButton.setAttribute("id", "nextButton");
   nextButton.setAttribute("onclick", "nextButtonClick()");
   nextButton.innerHTML = "Next";
@@ -195,4 +199,5 @@ function setTable(authorList) {
 
   //append buttons to the bottom of the table
   document.body.append(previousButton, nextButton);
+  updatePaginationButtons();
 }
