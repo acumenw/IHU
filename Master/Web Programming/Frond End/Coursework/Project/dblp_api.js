@@ -4,7 +4,6 @@ var authorList;
 var totalHits;
 var fPointer;
 var hPointer;
-var lastHit = 0;
 var url;
 var previousButton;
 var nextButton;
@@ -100,7 +99,13 @@ function previousButtonClick() {
 
 function updatePaginationButtons() {
   previousButton.disabled = fPointer === 0;
-  nextButton.disabled = false;
+  if (totalHits < hPointer || hPointer > totalHits - fPointer) {
+    nextButton.disabled = true;
+  }
+}
+
+function checkRemainingHits() {
+  //
 }
 
 function setTable(authorList) {
@@ -136,44 +141,49 @@ function setTable(authorList) {
   //append header row to the table
   table.append(headerRow);
 
+  //check remaining items
+  checkRemainingHits();
+
   //add data to table
   for (var i = 0; i < hPointer; i++) {
-    //create new row
-    var newRow = document.createElement("tr");
+    if (authorList.result.hits.hit[i]) {
+      //create new row
+      var newRow = document.createElement("tr");
 
-    //add title value to the row
-    var newRowTitle = document.createElement("td");
-    var newRowTitleContent = document.createTextNode(
-      authorList.result.hits.hit[i].info.title
-    );
-    newRowTitle.append(newRowTitleContent);
+      //add title value to the row
+      var newRowTitle = document.createElement("td");
+      var newRowTitleContent = document.createTextNode(
+        authorList.result.hits.hit[i].info.title
+      );
+      newRowTitle.append(newRowTitleContent);
 
-    //add venue value to the row
-    var newRowVenue = document.createElement("td");
-    var newRowVenueContent = document.createTextNode(
-      authorList.result.hits.hit[i].info.venue
-    );
-    newRowVenue.append(newRowVenueContent);
+      //add venue value to the row
+      var newRowVenue = document.createElement("td");
+      var newRowVenueContent = document.createTextNode(
+        authorList.result.hits.hit[i].info.venue
+      );
+      newRowVenue.append(newRowVenueContent);
 
-    //add year value to the row
-    var newRowYear = document.createElement("td");
-    var newRowYearContent = document.createTextNode(
-      authorList.result.hits.hit[i].info.year
-    );
-    newRowYear.append(newRowYearContent);
+      //add year value to the row
+      var newRowYear = document.createElement("td");
+      var newRowYearContent = document.createTextNode(
+        authorList.result.hits.hit[i].info.year
+      );
+      newRowYear.append(newRowYearContent);
 
-    //add type value to the row
-    var newRowType = document.createElement("td");
-    var newRowTypeContent = document.createTextNode(
-      authorList.result.hits.hit[i].info.type
-    );
-    newRowType.append(newRowTypeContent);
+      //add type value to the row
+      var newRowType = document.createElement("td");
+      var newRowTypeContent = document.createTextNode(
+        authorList.result.hits.hit[i].info.type
+      );
+      newRowType.append(newRowTypeContent);
 
-    //append values to the new row
-    newRow.append(newRowTitle, newRowVenue, newRowYear, newRowType);
+      //append values to the new row
+      newRow.append(newRowTitle, newRowVenue, newRowYear, newRowType);
 
-    //append new row to the table
-    table.append(newRow);
+      //append new row to the table
+      table.append(newRow);
+    }
   }
 
   //create previous button
@@ -199,5 +209,13 @@ function setTable(authorList) {
 
   //append buttons to the bottom of the table
   document.body.append(previousButton, nextButton);
+
   updatePaginationButtons();
+
+  //print values for check
+  console.log("fPointer: ", fPointer);
+  console.log("hPointer: ", hPointer);
+  console.log("Total Hits: ", totalHits);
+  console.log("URL: ", url);
+  console.log("Response: ", authorList);
 }
