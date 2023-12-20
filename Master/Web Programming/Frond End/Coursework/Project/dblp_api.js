@@ -10,7 +10,7 @@ var nextButton;
 
 function startSearch() {
   fPointer = 0;
-  hPointer = 2;
+  hPointer = 10;
   clearContent();
   authorNameDefault = document.getElementById("authorName").value;
   authorName = authorNameDefault.split(" ").join("_");
@@ -58,7 +58,11 @@ function getAuthor(name) {
       console.log("[getAuthor]API URL: ", url);
       console.log("[getAuthor]Response: ", authorList);
       if (totalHits <= 0) {
-        authorNotFound();
+        if (authorNameDefault.length === 0) {
+          authorBlankName();
+        } else {
+          authorNotFound();
+        }
       } else {
         authorFound();
         setTable(authorList);
@@ -74,7 +78,17 @@ function authorNotFound() {
     .getElementById("searchInfo")
     .setAttribute("class", "warningMessages");
   document.getElementById("searchInfo").textContent =
-    "No author found with the name: " + authorName + ", please try again";
+    "No author found with the name: " +
+    authorNameDefault +
+    ", please try again";
+}
+
+function authorBlankName() {
+  document
+    .getElementById("searchInfo")
+    .setAttribute("class", "warningMessages");
+  document.getElementById("searchInfo").textContent =
+    "Please enter an author name in the search bar.";
 }
 
 function authorFound() {
@@ -151,11 +165,29 @@ function setTable(authorList) {
       var newRow = document.createElement("tr");
 
       //add title value to the row
+      // create a link value
+      var newTitleLink = document.createElement("a");
+
+      // set the href attribute of the link
+      newTitleLink.href = authorList.result.hits.hit[i].info.url;
+      newTitleLink.target = "_bblank";
+
+      // create a table cell for the title
       var newRowTitle = document.createElement("td");
+
+      // create a text node for the title content
       var newRowTitleContent = document.createTextNode(
         authorList.result.hits.hit[i].info.title
       );
-      newRowTitle.append(newRowTitleContent);
+
+      // append the text node to the link
+      newTitleLink.appendChild(newRowTitleContent);
+
+      // append the link to the table cell
+      newRowTitle.appendChild(newTitleLink);
+
+      // now, append the table cell to the row
+      newRow.appendChild(newRowTitle);
 
       //add venue value to the row
       var newRowVenue = document.createElement("td");
@@ -213,9 +245,9 @@ function setTable(authorList) {
   updatePaginationButtons();
 
   //print values for check
-  console.log("fPointer: ", fPointer);
-  console.log("hPointer: ", hPointer);
-  console.log("Total Hits: ", totalHits);
-  console.log("URL: ", url);
-  console.log("Response: ", authorList);
+  // console.log("fPointer: ", fPointer);
+  // console.log("hPointer: ", hPointer);
+  // console.log("Total Hits: ", totalHits);
+  // console.log("URL: ", url);
+  // console.log("Response: ", authorList);
 }
