@@ -1,12 +1,15 @@
 var authorNameDefault;
 var authorName;
+var authorList;
 var totalHits;
 var fPointer = 0;
-var hPointer = 20;
-var lastHit;
+var hPointer = 2;
+var lastHit = 0;
 var url;
 
 function startSearch() {
+  fPointer = 0;
+  hPointer = 2;
   clearContent();
   authorNameDefault = document.getElementById("authorName").value;
   authorName = authorNameDefault.split(" ").join("_");
@@ -16,8 +19,8 @@ function startSearch() {
 function clearContent() {
   const publDataElement = document.getElementById("publData");
   const searchInfoElement = document.getElementById("searchInfo");
-  const previousButton = document.getElementById("previousButton");
-  const nextButton = document.getElementById("nextButton");
+  const previousButtonStatus = document.getElementById("previousButton");
+  const nextButtonStatus = document.getElementById("nextButton");
 
   if (publDataElement) {
     publDataElement.remove();
@@ -27,11 +30,11 @@ function clearContent() {
     searchInfoElement.innerHTML = "";
   }
 
-  if (previousButton) {
-    previousButton.remove();
+  if (previousButtonStatus) {
+    previousButtonStatus.remove();
   }
-  if (nextButton) {
-    nextButton.remove();
+  if (nextButtonStatus) {
+    nextButtonStatus.remove();
   }
 }
 
@@ -48,8 +51,11 @@ function getAuthor(name) {
     .then((response) => {
       return response.json();
     })
-    .then((authorList) => {
+    .then((results) => {
+      authorList = results;
       totalHits = authorList.result.hits["@total"];
+      console.log("[getAuthor]API URL: ", url);
+      console.log("[getAuthor]Response: ", authorList);
       if (totalHits <= 0) {
         authorNotFound();
       } else {
@@ -78,12 +84,12 @@ function authorFound() {
     authorName.split("_").join(" ") + " Publications";
 }
 
-// function nextButtonClick() {
-//   fPointer += 20;
-//   console.log("test");
-//   getAuthor(authorName);
-//   updatePaginationButtons();
-// }
+function nextButtonClick() {
+  clearContent();
+  fPointer += hPointer;
+
+  getAuthor(authorName);
+}
 
 function updatePaginationButtons() {
   previousButton.disabled = fPointer === 0;
@@ -128,7 +134,7 @@ function setTable(authorList) {
   }
 
   //add data to table
-  for (var i = fPointer; i < lastHit; i++) {
+  for (var i = 0; i < hPointer; i++) {
     //create new row
     var newRow = document.createElement("tr");
 
