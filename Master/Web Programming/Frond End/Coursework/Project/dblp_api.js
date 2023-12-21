@@ -113,13 +113,9 @@ function previousButtonClick() {
 
 function updatePaginationButtons() {
   previousButton.disabled = fPointer === 0;
-  if (totalHits < hPointer || hPointer > totalHits - fPointer) {
+  if (totalHits < hPointer || hPointer >= totalHits - fPointer) {
     nextButton.disabled = true;
   }
-}
-
-function checkRemainingHits() {
-  //
 }
 
 function setTable(authorList) {
@@ -154,9 +150,6 @@ function setTable(authorList) {
 
   //append header row to the table
   table.append(headerRow);
-
-  //check remaining items
-  checkRemainingHits();
 
   //add data to table
   for (var i = 0; i < hPointer; i++) {
@@ -247,7 +240,7 @@ function setTable(authorList) {
   //print values for check
   // console.log("fPointer: ", fPointer);
   // console.log("hPointer: ", hPointer);
-  // console.log("Total Hits: ", totalHits);
+  console.log("Total Hits: ", totalHits);
   // console.log("URL: ", url);
   // console.log("Response: ", authorList);
 }
