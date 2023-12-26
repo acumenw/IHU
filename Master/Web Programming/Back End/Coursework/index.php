@@ -7,7 +7,7 @@
 </head>
 <body>
     <? php
-    echo "Hello Christos"
+    echo "Back End location"
     ?>
 </body>
 </html>
