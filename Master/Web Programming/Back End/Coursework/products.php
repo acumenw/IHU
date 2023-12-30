@@ -38,20 +38,20 @@ if(isset($_GET['category_id'])) {
 
 <body>
     <h2 id='headers'>Products</h2>
-    <div id='categoryProductsList'>
-        <?php
+
+    <?php
 while($productRow = mysqli_fetch_assoc($productResult)) {
     $product_name = $productRow['product_name'];
     $product_price = $productRow['product_price'];
-    
+    echo "<div id='categoryProductsList'>";
     echo "<p>Name: $product_name</p>";
     echo "<p>Price: €$product_price</p>";
     echo "<a class='addToCart' href='insert_cart.php?product_id={$productRow['product_id']}'>Add to Cart</a>";
-    
+    echo "</div>";
 
 }
 ?>
-    </div>
+
     <div id='footer'>
         <button><a href="index.php">QuickMart</a></button>
         <button><a href="cart.php">View Cart</a></button>
