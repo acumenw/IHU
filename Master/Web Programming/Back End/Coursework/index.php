@@ -22,25 +22,26 @@ $result = mysqli_query($conn, $query);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>QuickMart | Homepage</title>
 </head>
 
 <body>
+    <h2 id='headers'>Categories</h2>
     <div id="categories">
-        <h2 id='headers'>Categories</h2>
         <?php
         while($row = mysqli_fetch_assoc($result)) {
             $categoryId = $row['category_id'];
             $categoryName = $row['category_name'];
-            echo "<button id='categoryuButtons'><a href = 'products.php?category_id=$categoryId'>$categoryName</a></button>";
+            echo "<a id='categoryButtons' href='products.php?category_id=$categoryId'>$categoryName</a>";
         }
 
         mysqli_close($conn);
 
 ?>
     </div>
-    <div id="cartButton">
-        <button id='navButtons'><a href='cart.php'>View Cart</button>
+    <div id="footer">
+        <button><a href='cart.php'>View Cart</a></button>
     </div>
 </body>
 

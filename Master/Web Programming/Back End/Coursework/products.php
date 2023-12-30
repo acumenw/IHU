@@ -31,29 +31,31 @@ if(isset($_GET['category_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>QuickMart | <?php echo htmlspecialchars($category_name) ?>
     </title>
 </head>
 
 <body>
     <h2 id='headers'>Products</h2>
-    <?php
+    <div id='categoryProductsList'>
+        <?php
 while($productRow = mysqli_fetch_assoc($productResult)) {
     $product_name = $productRow['product_name'];
     $product_price = $productRow['product_price'];
     
-
-    echo "<div id='categoryProductsList'>";
-    echo "<p>Product Name: $product_name</p>";
-    echo "<p>Product Price: €$product_price</p>";
-    echo "<button id='addToCart'><a href='insert_cart.php?product_id={$productRow['product_id']}'>Add to Cart</a></button>";
-    echo "</div>";
+    echo "<p>Name: $product_name</p>";
+    echo "<p>Price: €$product_price</p>";
+    echo "<a class='addToCart' href='insert_cart.php?product_id={$productRow['product_id']}'>Add to Cart</a>";
+    
 
 }
 ?>
-
-    <button id='navButtons'><a href="index.php">QuickMart</a></button>
-    <button id='navButtons'><a href="cart.php">View Cart</a></button>
+    </div>
+    <div id='footer'>
+        <button><a href="index.php">QuickMart</a></button>
+        <button><a href="cart.php">View Cart</a></button>
+    </div>
 </body>
 
 </html>

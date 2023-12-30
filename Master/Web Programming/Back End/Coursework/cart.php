@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <h2 id='headers'>QuickMart Cart</h2>
     <title>QuickMart | Cart</title>
 </head>
 
@@ -25,8 +27,6 @@ if(isset($_COOKIE['cart'])) {
             die("Connection failed: " . mysqli_connect_error());
         }
 
-        echo "<h3 id='headers'>AB Cart</h3>";
-
         $totalPrice = 0;
 
         foreach($cart as $product_id => $quantity) {
@@ -40,14 +40,17 @@ if(isset($_COOKIE['cart'])) {
 
                 $totalProductPrice = $product_price * $quantity;
 
-                echo "<div id='cartProducts'>";
-                echo "<p>Product Name: $product_name</p>";
-                echo "<p>Quantity: $quantity</p>";
-                echo "<p>Price per item: €$product_price</p>";
-                echo "<p>Total Price: €$totalProductPrice</p>";
+                echo "<div class='cartProducts'>";
+                echo "Product Name: $product_name";
+                echo "</br>";
+                echo "Quantity: $quantity";
+                echo "</br>";
+                echo "Price: €$product_price";
+                echo "</br>";
+                echo "Total: €" . number_format($totalProductPrice, 2);
                 echo "<form method='post'>";
                 echo "<input type='hidden' name='product_id' value='$product_id'>";
-                echo "<button id='removeButton' type='submit' name='remove'>Remove</button>";
+                echo "<button class='removeButton' type='submit' name='remove'>Remove</button>";
                 echo "</form>";
                 echo "</div>";
 
@@ -58,7 +61,7 @@ if(isset($_COOKIE['cart'])) {
             }
         }
 
-        echo "<p>Total Price: €$totalPrice</p>";
+        echo "<p id='totalPrice'>Cart Total: €" . number_format($totalPrice, 2) . "</p>";
 
         if (isset($_POST['remove'])) {
             $remove_product_id = $_POST['product_id'];
@@ -73,14 +76,20 @@ if(isset($_COOKIE['cart'])) {
                 exit();
             }
         }
-        echo "<button id='navButtons'><a href='index.php'>QuickMart</a></button>";
+        echo "<div id='footer'>";
+        echo "<button><a href='index.php'>QuickMart</a></button>";
+        echo "</div>";
     } else {
-        echo "<h3>You Cart is Empty</h3>";
-        echo "<button id='navButtons'><a href='index.php'>QuickMart</a></button>";
+        echo "<p id='emptyCart'>You Cart is Empty</p>";
+        echo "<div id='footer'>";
+        echo "<button><a href='index.php'>QuickMart</a></button>";
+        echo "</div>";
     }
 } else {
-    echo "<h3>You Cart is Empty</h3>";
-    echo "<button id='navButtons'><a href='index.php'>QuickMart</a></button>";
+    echo "<p id='emptyCart'>You Cart is Empty</p>";
+    echo "<div id='footer'>";
+    echo "<button><a href='index.php'>QuickMart</a></button>";
+    echo "</div>";
 }
     ?>
 </body>
