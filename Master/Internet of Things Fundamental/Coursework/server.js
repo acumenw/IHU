@@ -1,17 +1,21 @@
+//load requirements
 const { Client } = require("@notionhq/client");
 require("dotenv").config();
 
-// Initialize the Notion client with your Notion API token
-// Replace 'your_notion_api_token' with your actual Notion API token
-const notion = new Client({
-  auth: "your_notion_api_token",
-});
-const api_key = process.env.api_key;
+//get .env variables
+const apiKey = process.env.NOTION_API_TOKEN;
+const databaseId = process.env.TO_DO_DATABASE_ID;
 
-// Function to add an item to a Notion database
-// Parameters:
-//   databaseId - The ID of the database where you want to add the item
-//   text - The text content you want to add to the database
+//Here will be setup the first section where we get an input from the raspberry microphone,
+//convert the input to string and store it to inputText variable
+const inputText = "Transcribed Text from Mic";
+
+//Initialize the Notion client
+const notion = new Client({
+  auth: apiKey,
+});
+
+// Create function to add db item to Notion
 async function addItemToDatabase(databaseId, text) {
   try {
     // Using Notion API to create a new page (item) in the database
@@ -38,10 +42,4 @@ async function addItemToDatabase(databaseId, text) {
   }
 }
 
-// Replace with your actual database ID
-const databaseId = "your_database_id";
-// Example text input, replace this with actual data from speech-to-text output
-const inputText = "Sample text from speech recognition";
-
-// Call the function to add the text to the Notion database
 addItemToDatabase(databaseId, inputText);
