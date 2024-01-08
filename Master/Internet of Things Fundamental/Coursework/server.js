@@ -6,6 +6,7 @@ require("dotenv").config();
 const notion = new Client({
   auth: "your_notion_api_token",
 });
+const api_key = process.env.api_key;
 
 // Function to add an item to a Notion database
 // Parameters:
