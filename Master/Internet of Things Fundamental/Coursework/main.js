@@ -62,6 +62,7 @@ async function addItemToDatabase(transcription) {
   sendToDisplay(displayMessage);
 }
 
+//Connect to Flask server
 function sendToDisplay(displayMessage) {
   axios
     .post("http://192.168.1.15:5000/display", displayMessage)
