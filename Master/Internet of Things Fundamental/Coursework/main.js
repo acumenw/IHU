@@ -6,7 +6,7 @@ const dotenv = require("dotenv").config();
 const { Client } = require("@notionhq/client");
 const Gpio = require("onoff").Gpio;
 
-// Initialize Speech Recognition and Notion Client, get Notion database ID from .env
+// Initialize Google Speech Recognition and Notion Client, get Notion database ID from .env
 const client = new speech.SpeechClient();
 const notion = new Client({ auth: process.env.NOTION_API_TOKEN });
 const notionDatabaseId = process.env.NOTION_DATABASE_ID;
@@ -29,7 +29,7 @@ function handleLED(success) {
   setTimeout(() => whiteLED.writeSync(1), 2000); // Turn on white after 2 seconds
 }
 
-// Add Transcribed Data to Notion Task Tracker
+// Add transcribed data to Notion Task Tracker
 async function addItemToDatabase(transcription) {
   let displayMessage = {
     status: "",
@@ -64,7 +64,7 @@ async function addItemToDatabase(transcription) {
   sendToDisplay(displayMessage);
 }
 
-//POST the Transcribed Voice Command to Display (Flask Server ip)
+//POST the transcribed voice command to display (Flask Server ip)
 function sendToDisplay(displayMessage) {
   axios
     .post("http://192.168.1.15:5000/display", displayMessage)
