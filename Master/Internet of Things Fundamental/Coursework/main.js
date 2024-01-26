@@ -1,3 +1,4 @@
+//Importing Modules
 const record = require("node-record-lpcm16");
 const speech = require("@google-cloud/speech");
 const axios = require("axios");
@@ -5,16 +6,17 @@ const dotenv = require("dotenv").config();
 const { Client } = require("@notionhq/client");
 const Gpio = require("onoff").Gpio;
 
-// Initialize variables
+// Initialize Speech Recognition and Notion Client, get Notion database ID from .env
 const client = new speech.SpeechClient();
 const notion = new Client({ auth: process.env.NOTION_API_TOKEN });
 const notionDatabaseId = process.env.NOTION_DATABASE_ID;
 
+//Setup GPIO pins for LEDs
 const whiteLED = new Gpio(18, "out");
 const greenLED = new Gpio(12, "out");
 const redLED = new Gpio(25, "out");
 
-// Control LED
+// Control LED behaviour based on the Notion API status
 function handleLED(success) {
   whiteLED.writeSync(0); // Turn off white
   if (success) {
@@ -27,7 +29,7 @@ function handleLED(success) {
   setTimeout(() => whiteLED.writeSync(1), 2000); // Turn on white after 2 seconds
 }
 
-// Add Data to Notion
+// Add Transcribed Data to Notion Task Tracker
 async function addItemToDatabase(transcription) {
   let displayMessage = {
     status: "",
@@ -62,6 +64,7 @@ async function addItemToDatabase(transcription) {
   sendToDisplay(displayMessage);
 }
 
+//POST the Transcribed Voice Command to Display (Flask Server ip)
 function sendToDisplay(displayMessage) {
   axios
     .post("http://192.168.1.15:5000/display", displayMessage)
@@ -99,6 +102,7 @@ const recognizeStream = client
 // Turn on the white LED when the application starts
 whiteLED.writeSync(1);
 
+//Configure audio recording and pipe it to the speech regognition stream
 record
   .record({
     sampleRateHertz: 16000,
@@ -112,7 +116,7 @@ record
   .on("error", (err) => console.error("Recording error:", err))
   .pipe(recognizeStream);
 
-// Handle application exit
+// Handle application exit, turn off and unexport all LEDs
 process.on("SIGINT", () => {
   // Turn off all LEDs
   whiteLED.writeSync(0);
