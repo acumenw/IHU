@@ -1,4 +1,4 @@
-//Importing Modules / Libraries
+//Importing Modules
 const record = require("node-record-lpcm16");
 const speech = require("@google-cloud/speech");
 const axios = require("axios");
